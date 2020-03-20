@@ -5,11 +5,9 @@ provider "aws" {
 
 data "aws_vpc" "default" {
   state = "available"
-
-  tags {
-    Name = "${var.vpc}"
-  }
+  id = "${var.vpc-id}"
 }
+
 
 data "aws_subnet_ids" "private" {
   vpc_id = "${data.aws_vpc.default.id}"
@@ -27,13 +25,13 @@ resource "aws_security_group" "bastion" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [${var.myip}]
   }
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 3389
+    to_port     = 3389
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [${var.myip}]
   }
 
   egress {
@@ -55,7 +53,7 @@ resource "aws_instance" "bastion" {
   instance_type = "${var.instance_type}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
   availability_zone      = "${var.availability_zones[0]}"
-  subnet_id = "${data.aws_subnet_ids.private.ids[0]}"
+  subnet_id = "${var.subnet}"
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
   root_block_device = {
     volume_type           = "gp2"

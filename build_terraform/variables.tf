@@ -16,11 +16,20 @@ variable "env" {
 }
 
 variable "aws_key_pair" {
-   default = "key-hmg"
+   default = "keypair-bastion-infra"
 }
 
-variable "vpc" { 
-  default = "vpc-name"
+variable "vpc-name" { 
+  default = ""
+}
+
+variable "myip" {
+  default = ""
+}
+
+
+variable "vpc-id" {
+  default = "vpc-92c61eeb"
 }
 
 variable "ami" { 
@@ -28,15 +37,15 @@ variable "ami" {
 }
 
 variable "aws_region" { 
-  default = "sa-east-1" 
+  default = "us-east-1" 
 }
 
 variable "subnet" { 
-  default = "NET-PrivA" 
+  default = "subnet-29c51b73" 
 }
 
 variable "availability_zones" {
   description = "AWS availability zones."
-  default     = ["sa-east-1a", "sa-east-1b", "sa-east-1c"]
+  default     = ["us-east-1d"]
 }
 
